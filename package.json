@@ -11,7 +11,8 @@
   "dependencies": {
     "adm-zip": "~0.4.3",
     "which": "~1.0.5",
-    "kew": "~0.3.2"
+    "kew": "~0.3.2",
+    "npmconf": "~0.1.12"
   },
   "devDependencies": {},
   "repository": {
