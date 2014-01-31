@@ -2,7 +2,6 @@
   "name": "selenium-chromedriver",
   "version": "0.0.1",
   "description": "Simple utility for downloading the Selenium Webdriver for Google Chrome",
-  "main": "location",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

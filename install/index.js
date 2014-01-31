@@ -7,7 +7,6 @@
 
 var cp = require('child_process');
 var fs = require('fs');
-var helper = require('./helper');
 var kew = require('kew');
 //var ncp = require('ncp');
 var mkdirp = require('mkdirp');
@@ -16,6 +15,7 @@ var which = require('which');
 var temp = require("temp");
 temp.track();
 
+var requiredVersion = require('../').version;
 var requestBinary = require('./request-binary');
 var extract = require('./extract');
 
@@ -124,7 +124,7 @@ whichDeferred.promise
     var version = stats.version;
     var path = stats.path;
 
-    if (helper.version == version) {
+    if (requiredVersion == version) {
       writeLocationFile(driverPath);
       console.log('chromedriver is already installed at ' + path + '.');
       process.exit(0);
@@ -171,8 +171,7 @@ function writeLocationFile(location) {
   if (process.platform === 'win32') {
     location = location.replace(/\\/g, '\\\\')
   }
-  fs.writeFileSync(path.join(__dirname, '..', 'location.js'),
-      'module.exports.location = "' + location + '"')
+  fs.writeFileSync(path.join(__dirname, '..', 'location.txt'), location);
 }
 
 function copyIntoPlace(extractedPath, targetDir) {
