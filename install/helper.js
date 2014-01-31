@@ -28,22 +28,6 @@ try {
  */
 exports.version = '1.9.7'
 
-
-/**
- * Returns a clean path that helps avoid `which` finding bin files installed
- * by NPM for this repo.
- * @param {string} path
- * @return {string}
- */
-exports.cleanPath = function (path) {
-  return path
-      .replace(/:[^:]*node_modules[^:]*/g, '')
-      .replace(/(^|:)\.\/bin(\:|$)/g, ':')
-      .replace(/^:+/, '')
-      .replace(/:+$/, '')
-}
-
-
 // Make sure the binary is executable.  For some reason doing this inside
 // install does not work correctly, likely due to some NPM step.
 if (exports.path) {

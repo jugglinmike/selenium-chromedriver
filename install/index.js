@@ -26,12 +26,14 @@ if (process.platform === 'win32') {
   binaryName += '.exe';
 }
 
-var originalPath = process.env.PATH;
-
 // NPM adds bin directories to the path, which will cause `which` to find the
 // bin for this package not the actual chromedriver bininary.  Also help out
 // people who put ./bin on their path
-process.env.PATH = helper.cleanPath(originalPath);
+var originalPath = process.env.PATH;
+process.env.PATH = require('./util/clean-path')(originalPath);
+process.addListener('exit', function() {
+  process.env.PATH = originalPath;
+});
 
 var installDir = path.join(__dirname, '..', 'bin');
 var libDir = __dirname;
@@ -106,7 +108,7 @@ function getDownloadUrl(process) {
     console.error('Unexpected platform or architecture.');
     console.error('  Platform:\t' + process.platform);
     console.error(  'Architecture:\t' + process.arch);
-    exit(1);
+    process.exit(1);
   }
 
   url += '.zip';
@@ -125,7 +127,7 @@ whichDeferred.promise
     if (helper.version == version) {
       writeLocationFile(driverPath);
       console.log('chromedriver is already installed at ' + path + '.');
-      exit(0);
+      process.exit(0);
     } else {
       console.log('chromedriver detected, but wrong version ', version, '@', path + '.');
       throw new Error('Wrong version');
@@ -156,11 +158,11 @@ whichDeferred.promise
     var relativeLocation = path.relative(path.join(__dirname, '..'), location)
     writeLocationFile(relativeLocation)
     console.log('Done. chromedriver binary available at', location)
-    exit(0)
+    process.exit(0)
   })
   .fail(function (err) {
     console.error('chromedriver installation failed', err, err.stack)
-    exit(1)
+    process.exit(1)
   })
 
 
@@ -172,13 +174,6 @@ function writeLocationFile(location) {
   fs.writeFileSync(path.join(__dirname, '..', 'location.js'),
       'module.exports.location = "' + location + '"')
 }
-
-
-function exit(code) {
-  process.env.PATH = originalPath
-  process.exit(code || 0)
-}
-
 
 function copyIntoPlace(extractedPath, targetDir) {
   var dfd = kew.defer();
