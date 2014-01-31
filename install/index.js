@@ -10,7 +10,7 @@ var fs = require('fs');
 var helper = require('./helper');
 var kew = require('kew');
 //var ncp = require('ncp');
-//var mkdirp = require('mkdirp');
+var mkdirp = require('mkdirp');
 var path = require('path');
 var which = require('which');
 var temp = require("temp");
@@ -33,7 +33,7 @@ var originalPath = process.env.PATH;
 // put ./bin on their path
 process.env.PATH = helper.cleanPath(originalPath);
 
-var installDir = path.join(__dirname, '..');
+var installDir = path.join(__dirname, '..', 'bin');
 var libDir = __dirname;
 var tmpPath = null;
 
@@ -169,7 +169,7 @@ function writeLocationFile(location) {
   if (process.platform === 'win32') {
     location = location.replace(/\\/g, '\\\\')
   }
-  fs.writeFileSync(path.join(libDir, 'location.js'),
+  fs.writeFileSync(path.join(__dirname, '..', 'location.js'),
       'module.exports.location = "' + location + '"')
 }
 
@@ -182,6 +182,9 @@ function exit(code) {
 
 function copyIntoPlace(extractedPath, targetDir) {
   var dfd = kew.defer();
+
+  mkdirp.sync(targetDir);
+
   // Look for the extracted directory, so we can rename it.
   fs.readdirSync(extractedPath).forEach(function(fileName) {
     if (fileName !== binaryName) {
