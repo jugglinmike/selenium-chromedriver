@@ -1,8 +1,8 @@
 // Copyright 2013 The Obvious Corporation.
 
 /**
- * @fileoverview Helpers made available via require('phantomjs') once package is
- * installed.
+ * @fileoverview Helpers made available via require('selenium-chromedriver')
+ * once package is installed.
  */
 
 var fs = require('fs')
@@ -11,7 +11,7 @@ var which = require('which')
 
 
 /**
- * Where the phantom binary can be found.
+ * Where the chromedriver binary can be found.
  * @type {string}
  */
 try {
@@ -23,7 +23,7 @@ try {
 
 
 /**
- * The version of phantomjs installed by this package.
+ * The version of chromedriver installed by this package.
  * @type {number}
  */
 exports.version = '1.9.7'
@@ -56,6 +56,6 @@ if (exports.path) {
     }
   } catch (e) {
     // Just ignore error if we don't have permission.
-    // We did our best. Likely because phantomjs was already installed.
+    // We did our best. Likely because the chromedriver was already installed.
   }
 }

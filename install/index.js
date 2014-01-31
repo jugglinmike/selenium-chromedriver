@@ -29,8 +29,8 @@ if (process.platform === 'win32') {
 var originalPath = process.env.PATH;
 
 // NPM adds bin directories to the path, which will cause `which` to find the
-// bin for this package not the actual phantomjs bin.  Also help out people who
-// put ./bin on their path
+// bin for this package not the actual chromedriver bininary.  Also help out
+// people who put ./bin on their path
 process.env.PATH = helper.cleanPath(originalPath);
 
 var installDir = path.join(__dirname, '..', 'bin');
@@ -124,10 +124,10 @@ whichDeferred.promise
 
     if (helper.version == version) {
       writeLocationFile(driverPath);
-      console.log('PhantomJS is already installed at ' + path + '.');
+      console.log('chromedriver is already installed at ' + path + '.');
       exit(0);
     } else {
-      console.log('PhantomJS detected, but wrong version ', version, '@', path + '.');
+      console.log('chromedriver detected, but wrong version ', version, '@', path + '.');
       throw new Error('Wrong version');
     }
   })
@@ -155,11 +155,11 @@ whichDeferred.promise
 
     var relativeLocation = path.relative(path.join(__dirname, '..'), location)
     writeLocationFile(relativeLocation)
-    console.log('Done. Phantomjs binary available at', location)
+    console.log('Done. chromedriver binary available at', location)
     exit(0)
   })
   .fail(function (err) {
-    console.error('Phantom installation failed', err, err.stack)
+    console.error('chromedriver installation failed', err, err.stack)
     exit(1)
   })
 
