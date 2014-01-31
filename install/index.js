@@ -153,7 +153,7 @@ whichDeferred.promise
   .then(function () {
     var location = path.join(installDir, binaryName);
 
-    var relativeLocation = path.relative(libDir, location)
+    var relativeLocation = path.relative(path.join(__dirname, '..'), location)
     writeLocationFile(relativeLocation)
     console.log('Done. Phantomjs binary available at', location)
     exit(0)
