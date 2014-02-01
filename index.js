@@ -1,15 +1,16 @@
 var fs = require('fs');
 var path = require('path');
+var locationFile = path.join(__dirname, 'location.txt');
 var relativeLocation;
 
 exports.version = '1.9.7';
 
-if (!fs.existsSync('location.txt')) {
+if (!fs.existsSync(locationFile)) {
   exports.path = null;
   return;
 }
 
-relativeLocation = fs.readFileSync('location.txt', { encoding: 'utf8' });
+relativeLocation = fs.readFileSync(locationFile, { encoding: 'utf8' });
 exports.path = path.resolve(__dirname, relativeLocation);
 
 // Make sure the binary is executable. For some reason doing this inside
