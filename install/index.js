@@ -167,7 +167,7 @@ whichDeferred.promise
 
 
 function writeLocationFile(location) {
-  console.log('Writing location.js file')
+  console.log('Writing location.txt file')
   if (process.platform === 'win32') {
     location = location.replace(/\\/g, '\\\\')
   }
