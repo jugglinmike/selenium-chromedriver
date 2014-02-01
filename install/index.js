@@ -12,6 +12,7 @@ var kew = require('kew');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var which = require('which');
+var semver = require('semver');
 var temp = require("temp");
 temp.track();
 
@@ -124,8 +125,9 @@ whichDeferred.promise
     var version = stats.version;
     var path = stats.path;
 
-    if (requiredVersion == version) {
-      writeLocationFile(driverPath);
+
+    if (semver.satisfies(version, requiredVersion)) {
+      writeLocationFile(path);
       console.log('chromedriver is already installed at ' + path + '.');
       process.exit(0);
     } else {

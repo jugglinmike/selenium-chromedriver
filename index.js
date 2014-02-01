@@ -3,7 +3,7 @@ var path = require('path');
 var locationFile = path.join(__dirname, 'location.txt');
 var relativeLocation;
 
-exports.version = '1.9.7';
+exports.version = '~2.8.0';
 
 if (!fs.existsSync(locationFile)) {
   exports.path = null;
