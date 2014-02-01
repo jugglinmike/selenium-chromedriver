@@ -20,7 +20,6 @@ var requiredVersion = require('../').version;
 var requestBinary = require('./request-binary');
 var extract = require('./extract');
 
-var domain = 'http://chromedriver.storage.googleapis.com/';
 var binaryName = 'chromedriver';
 
 if (process.platform === 'win32') {
@@ -91,30 +90,34 @@ function getInstalledVersion(path) {
   return versionDfd.promise;
 }
 
-function getDownloadUrl(process) {
-  var url = 'chromedriver_';
+function getDownloadUrl(process, version) {
+  var domain = 'http://chromedriver.storage.googleapis.com';
+  var fileName = 'chromedriver_';
+  var extension = 'zip';
+  var platform = process.platform;
+  var arch = process.arch;
+  var versionDir = version.match(/^~(\d+.\d+)/)[1];
+
   // Can't use a global version so start a download.
-  if (process.platform === 'linux') {
-    url += 'linux';
-    if (process.arch === 'x64') {
-      url += '64';
+  if (platform === 'linux') {
+    fileName += 'linux';
+    if (arch === 'x64') {
+      fileName += '64';
     } else {
-      url += '32';
+      fileName += '32';
     }
-  } else if (process.platform === 'darwin' || process.platform === 'openbsd' || process.platform === 'freebsd') {
-    url += 'mac32';
-  } else if (process.platform === 'win32') {
-    url += 'win32'
+  } else if (platform === 'darwin' || platform === 'openbsd' || platform === 'freebsd') {
+    fileName += 'mac32';
+  } else if (platform === 'win32') {
+    fileName += 'win32'
   } else {
     console.error('Unexpected platform or architecture.');
-    console.error('  Platform:\t' + process.platform);
-    console.error(  'Architecture:\t' + process.arch);
+    console.error('  Platform:\t' + platform);
+    console.error('  Architecture:\t' + arch);
     process.exit(1);
   }
 
-  url += '.zip';
-
-  return url;
+  return domain + '/' + versionDir + '/' + fileName + '.' + extension;
 }
 
 var whichDeferred = kew.defer();
@@ -124,7 +127,6 @@ whichDeferred.promise
   .then(function (stats) {
     var version = stats.version;
     var path = stats.path;
-
 
     if (semver.satisfies(version, requiredVersion)) {
       writeLocationFile(path);
@@ -139,7 +141,7 @@ whichDeferred.promise
     // Trying to use a globally-installed file failed, so initiate download and
     // install steps instead.
     var tempDir = temp.mkdirSync('selenium-chromedriver');
-    var downloadUrl = domain + '2.8/' + getDownloadUrl(process);
+    var downloadUrl = getDownloadUrl(process, requiredVersion);
     var fileName = 'chromedriver.zip';
     var absFileName = path.join(tempDir, fileName);
 
