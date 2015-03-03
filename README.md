@@ -1,8 +1,12 @@
-# Selenium ChromeDriver
+**Selenium ChromeDriver**
 
-## Installation
+## Deprecation Notice
 
-    $ npm install selenium-chromedriver
+This project has been deprecated and will no longer be maintained. Please see
+the ChromeDriver project ([project
+source](https://github.com/giggio/node-chromedriver), [npm
+module](https://www.npmjs.com/package/chromedriver)) for equivalent
+functionality.
 
 ## License
 
