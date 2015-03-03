@@ -57,6 +57,13 @@ function getInstalledVersion(path) {
 
   versionDfd = kew.defer();
 
+  var timeoutError = new Error("Exceeded timeout without resolving");
+
+  // Timeout after a second if unable to properly `execFile` below.
+  var timeout = setTimeout(function() {
+    versionDfd.reject(timeoutError);
+  }, 1000);
+
   // The Chrome WebDriver binary does not currently implement any sort of
   // `version` command-line switch. It happens to print the current version
   // number immediately upon being executed, however.
@@ -67,6 +74,8 @@ function getInstalledVersion(path) {
   // "Issue 152:  Support --version switch"
   // https://code.google.com/p/chromedriver/issues/detail?id=152
   child = cp.execFile(path, function(err) {
+    clearTimeout(timeout);
+
     // If the child process exits before the version number has been read, then
     // this operation has failed (regardless of how the process exited).
     if (!obtainedVersion) {
