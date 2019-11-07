@@ -15,7 +15,7 @@
     "npmconf": "~0.1.12",
     "temp": "~0.6.0",
     "mkdirp": "~0.3.5",
-    "semver": "~2.2.1"
+    "semver": "~6.3.0"
   },
   "devDependencies": {},
   "repository": {
